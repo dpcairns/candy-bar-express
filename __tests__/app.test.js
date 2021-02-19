@@ -31,35 +31,84 @@ describe('app routes', () => {
       return client.end(done);
     });
 
-    test('returns animals', async() => {
+    test('returns all candies', async() => {
 
       const expectation = [
         {
           'id': 1,
-          'name': 'bessie',
-          'coolfactor': 3,
+          'name': 'baby ruth',
+          'yumminess': 3,
+          'has_chocolate': true,
+          'category': 'classic',
           'owner_id': 1
         },
         {
           'id': 2,
-          'name': 'jumpy',
-          'coolfactor': 4,
+          'name': 'air head',
+          'yumminess': 5,
+          'has_chocolate': false,
+          'category': 'nostalgic',
           'owner_id': 1
         },
         {
           'id': 3,
-          'name': 'spot',
-          'coolfactor': 10,
+          'name': 'snickers',
+          'yumminess': 7,
+          'has_chocolate': true,
+          'category': 'classic',
+          'owner_id': 1
+        },
+        {
+          'id': 4,
+          'name': 'hersheys cookies and cream',
+          'yumminess': 8,
+          'has_chocolate': true,
+          'category': 'modern',
+          'owner_id': 1
+        },
+        {
+          'id': 5,
+          'name': 'sour patch kids',
+          'yumminess': 8,
+          'has_chocolate': false,
+          'category': 'nostalgic',
           'owner_id': 1
         }
       ];
 
       const data = await fakeRequest(app)
-        .get('/animals')
+        .get('/candies')
         .expect('Content-Type', /json/)
         .expect(200);
 
       expect(data.body).toEqual(expectation);
+    });
+
+    test('returns a single candy with the matching id', async() => {
+
+      const expectation = {
+        'id': 2,
+        'name': 'air head',
+        'yumminess': 5,
+        'has_chocolate': false,
+        'category': 'nostalgic',
+        'owner_id': 1
+      };
+
+      const data = await fakeRequest(app)
+        .get('/candies/2')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(data.body).toEqual(expectation);
+
+
+      const nothing = await fakeRequest(app)
+        .get('/candies/100')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(nothing.body).toEqual('');
     });
   });
 });
