@@ -88,7 +88,7 @@ describe('app routes', () => {
 
       const expectation = {
         'id': 2,
-        'name': 'SCARE head',
+        'name': 'air head',
         'yumminess': 5,
         'has_chocolate': false,
         'category': 'nostalgic',
