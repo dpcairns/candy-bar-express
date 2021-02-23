@@ -4,6 +4,7 @@ const candies = require('./candies.js');
 const usersData = require('./users.js');
 const categoriesData = require('./categories.js');
 const { getEmoji } = require('../lib/emoji.js');
+const { getCategoryId } = require('./dataUtils.js');
 
 run();
 
@@ -23,7 +24,7 @@ async function run() {
       })
     );
 
-    const categories = await Promise.all(
+    const responses = await Promise.all(
       categoriesData.map(category => {
         return client.query(`
                       INSERT INTO categories (name)
@@ -35,6 +36,9 @@ async function run() {
     );
       
     const user = users[0].rows[0];
+
+    // tragically, we have to map over our responses, and for every response, gets first item of its rows. this is because Promise.all()
+    const categories = responses.map(({ rows }) => rows[0]);
 
     await Promise.all(
       candies.map(candy => {

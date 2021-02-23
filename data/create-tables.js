@@ -17,6 +17,10 @@ async function run() {
                     email VARCHAR(256) NOT NULL,
                     hash VARCHAR(512) NOT NULL
                 );           
+                CREATE TABLE categories (
+                  id SERIAL PRIMARY KEY NOT NULL,
+                  name VARCHAR(512) NOT NULL
+              );
                 CREATE TABLE candies (
                     id SERIAL PRIMARY KEY NOT NULL,
                     name VARCHAR(512) NOT NULL,
@@ -25,10 +29,7 @@ async function run() {
                     category_id INTEGER NOT NULL REFERENCES categories(id),
                     owner_id INTEGER NOT NULL REFERENCES users(id)
                 );
-                CREATE TABLE categories (
-                    id SERIAL PRIMARY KEY NOT NULL,
-                    name VARCHAR(512) NOT NULL
-                )
+
         `);
 
     console.log('create tables complete', getEmoji(), getEmoji(), getEmoji());

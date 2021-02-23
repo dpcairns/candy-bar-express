@@ -3,6 +3,11 @@ module.exports = [
     name: 'baby ruth',
     yumminess: 3,
     has_chocolate: true,
+    // JUST USE HARD CODED CATEGORY IDS
+    // PLEASE DON't JUST COPY MY STREATEGY HERE
+    // PLEASE
+    // THIS IS A STRETCH GOAL
+    // IT'S REALLY HARD
     category: 'classic'
   },
   {

@@ -36,41 +36,37 @@ describe('app routes', () => {
         {
           'id': 1,
           'name': 'baby ruth',
+          'category': 'classic',
           'yumminess': 3,
           'has_chocolate': true,
-          'category': 'classic',
-          'owner_id': 1
-        },
-        {
-          'id': 2,
-          'name': 'air head',
-          'yumminess': 5,
-          'has_chocolate': false,
-          'category': 'nostalgic',
+          'category_id': 1,
           'owner_id': 1
         },
         {
           'id': 3,
           'name': 'snickers',
+          'category': 'classic',
           'yumminess': 7,
           'has_chocolate': true,
-          'category': 'classic',
+          'category_id': 1,
           'owner_id': 1
         },
         {
           'id': 4,
           'name': 'hersheys cookies and cream',
+          'category': 'modern',
           'yumminess': 8,
           'has_chocolate': true,
-          'category': 'modern',
+          'category_id': 2,
           'owner_id': 1
         },
         {
           'id': 5,
           'name': 'sour patch kids',
+          'category': 'nostalgic',
           'yumminess': 8,
           'has_chocolate': false,
-          'category': 'nostalgic',
+          'category_id': 3,
           'owner_id': 1
         }
       ];
