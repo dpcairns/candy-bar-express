@@ -2,6 +2,7 @@ const client = require('../lib/client');
 // import our seed data:
 const candies = require('./candies.js');
 const usersData = require('./users.js');
+const categoriesData = require('./categories.js');
 const { getEmoji } = require('../lib/emoji.js');
 
 run();
@@ -19,6 +20,17 @@ async function run() {
                       RETURNING *;
                   `,
         [user.email, user.hash]);
+      })
+    );
+
+    const categories = await Promise.all(
+      categoriesData.map(category => {
+        return client.query(`
+                      INSERT INTO categories (name)
+                      VALUES ($1)
+                      RETURNING *;
+                  `,
+        [category.name]);
       })
     );
       
