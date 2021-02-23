@@ -3,30 +3,30 @@ module.exports = [
     name: 'baby ruth',
     yumminess: 3,
     has_chocolate: true,
-    category_id: 1
+    category: 'classic'
   },
   {
     name: 'air head',
     yumminess: 5,
     has_chocolate: false,
-    category_id: 3
+    category: 'nostalgic'
   },
   {
     name: 'snickers',
     yumminess: 7,
     has_chocolate: true,
-    category_id: 1
+    category: 'classic'
   },
   {
     name: 'hersheys cookies and cream',
     yumminess: 8,
     has_chocolate: true,
-    category_id: 2
+    category: 'modern'
   },
   {
     name: 'sour patch kids',
     yumminess: 8,
     has_chocolate: false,
-    category_id: 3
+    category: 'nostalgic'
   },
 ];

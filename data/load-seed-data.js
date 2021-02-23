@@ -38,15 +38,18 @@ async function run() {
 
     await Promise.all(
       candies.map(candy => {
+        // i want to avoid having to hard code my category ids. this function goes and finds the right category id.
+        const categoryId = getCategoryId(candy, categories);
+
         return client.query(`
-                    INSERT INTO candies (name, yumminess, has_chocolate, category, owner_id)
+                    INSERT INTO candies (name, yumminess, has_chocolate, category_id, owner_id)
                     VALUES ($1, $2, $3, $4, $5);
                 `,
         [
           candy.name, 
           candy.yumminess, 
           candy.has_chocolate,
-          candy.category,
+          categoryId,
           user.id,
         ]);
       })
