@@ -43,6 +43,24 @@ describe('app routes', () => {
           'owner_id': 1
         },
         {
+          'id': 5,
+          'name': 'sour patch kids',
+          'category': 'nostalgic',
+          'yumminess': 8,
+          'has_chocolate': false,
+          'category_id': 3,
+          'owner_id': 1
+        },
+        {
+          id: 2,
+          name: 'air head',
+          yumminess: 5,
+          has_chocolate: false,
+          category: 'nostalgic',
+          category_id: 3,
+          owner_id: 1
+        },
+        {
           'id': 3,
           'name': 'snickers',
           'category': 'classic',
@@ -60,15 +78,6 @@ describe('app routes', () => {
           'category_id': 2,
           'owner_id': 1
         },
-        {
-          'id': 5,
-          'name': 'sour patch kids',
-          'category': 'nostalgic',
-          'yumminess': 8,
-          'has_chocolate': false,
-          'category_id': 3,
-          'owner_id': 1
-        }
       ];
 
       const data = await fakeRequest(app)
@@ -76,7 +85,7 @@ describe('app routes', () => {
         .expect('Content-Type', /json/)
         .expect(200);
 
-      expect(data.body).toEqual(expectation);
+      expect(data.body).toEqual(expect.arrayContaining(expectation));
     });
 
     test('returns a single candy with the matching id', async() => {
@@ -112,7 +121,7 @@ describe('app routes', () => {
         name: 'turkish delight',
         yumminess: 5,
         has_chocolate: false,
-        category: 'classic',
+        category_id: 3,
       };
 
       // define what we expect that candy to look like after SQL does its thing
@@ -127,10 +136,11 @@ describe('app routes', () => {
         .post('/candies')
         // pass in our new candy as the req.body
         .send(newCandy)
-        .expect('Content-Type', /json/)
-        .expect(200);
+        .expect('Content-Type', /json/);
+        // .expect(200);
 
       // we expect the post endpoint to responds with our expected candy
+      // our POST endpoint responds with an object with a category_id
       expect(data.body).toEqual(expectedCandy);
 
       // we want to check that the new candy is now ACTUALLY in the database
@@ -140,11 +150,17 @@ describe('app routes', () => {
         .expect('Content-Type', /json/)
         .expect(200);
 
+      // but our GET endpoint does the join that rewrites the category_id as a string of the human readable category
+      const getExpectation = {
+        ...expectedCandy,
+        category: 'nostalgic'
+      };
       // we go and find the turkish delight
-      const turkishDelight = allCandies.body.find(candy => candy.name === 'turkish delight');
+      // const turkishDelight = allCandies.body.find(candy => candy.name === 'turkish delight');
 
       // we check to see that the turkish delight in the DB matches the one we expected
-      expect(turkishDelight).toEqual(expectedCandy);
+      // go through the GET ALL array, and see if it contains something equal to our new expectation
+      expect(allCandies.body).toContainEqual(getExpectation);
     });
 
     test('updates a candy bar', async() => {
@@ -153,23 +169,25 @@ describe('app routes', () => {
         name: 'super candy',
         yumminess: 10,
         has_chocolate: false,
-        category: 'modern',
+        category_id: 2,
       };
 
       const expectedCandy = {
-        ...newCandy,
+        name: 'super candy',
+        yumminess: 10,
+        has_chocolate: false,
         owner_id: 1,
+        category: 'modern',
         id: 1
       };
       
-
       // use the put endpoint to update a candy
       await fakeRequest(app)
         .put('/candies/1')
         // pass in our new candy as the req.body
         .send(newCandy)
-        .expect('Content-Type', /json/)
-        .expect(200);
+        .expect('Content-Type', /json/);
+      // .expect(200);
 
       // go grab the candy we expect to be updated
       const updatedCandy = await fakeRequest(app)
@@ -188,7 +206,7 @@ describe('app routes', () => {
         'name': 'air head',
         'yumminess': 5,
         'has_chocolate': false,
-        'category': 'nostalgic',
+        'category_id': 3,
         'owner_id': 1
       };
 
