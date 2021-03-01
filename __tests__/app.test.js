@@ -31,80 +31,61 @@ describe('app routes', () => {
       return client.end(done);
     });
 
-    test('returns all candies', async() => {
+    const candy = {
+      'name': 'sour patch kids',
+      'yumminess': 8,
+      'has_chocolate': false,
+      'category': 'nostalgic',
+    };
 
-      const expectation = [
-        {
-          'id': 1,
-          'name': 'baby ruth',
-          'yumminess': 3,
-          'has_chocolate': true,
-          'category': 'classic',
-          'owner_id': 1
-        },
-        {
-          'id': 2,
-          'name': 'air head',
-          'yumminess': 5,
-          'has_chocolate': false,
-          'category': 'nostalgic',
-          'owner_id': 1
-        },
-        {
-          'id': 3,
-          'name': 'snickers',
-          'yumminess': 7,
-          'has_chocolate': true,
-          'category': 'classic',
-          'owner_id': 1
-        },
-        {
-          'id': 4,
-          'name': 'hersheys cookies and cream',
-          'yumminess': 8,
-          'has_chocolate': true,
-          'category': 'modern',
-          'owner_id': 1
-        },
-        {
-          'id': 5,
-          'name': 'sour patch kids',
-          'yumminess': 8,
-          'has_chocolate': false,
-          'category': 'nostalgic',
-          'owner_id': 1
-        }
-      ];
+    const dbCandy = {
+      ...candy,
+      owner_id: 2,
+      id:6,
+    };
+
+    test('create a candy', async() => {
+      const candy = {
+        'name': 'sour patch kids',
+        'yumminess': 8,
+        'has_chocolate': false,
+        'category': 'nostalgic',
+      };
 
       const data = await fakeRequest(app)
-        .get('/candies')
+        .post('/api/candies')
+        .send(candy)
+        .set('Authorization', token)
         .expect('Content-Type', /json/)
         .expect(200);
 
-      expect(data.body).toEqual(expectation);
+      expect(data.body).toEqual(dbCandy);
+    });
+
+    test('returns all candies for a given user', async() => {
+      const data = await fakeRequest(app)
+        .get('/api/candies')
+        .set('Authorization', token)
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(data.body).toEqual([dbCandy]);
     });
 
     test('returns a single candy with the matching id', async() => {
 
-      const expectation = {
-        'id': 2,
-        'name': 'air head',
-        'yumminess': 5,
-        'has_chocolate': false,
-        'category': 'nostalgic',
-        'owner_id': 1
-      };
-
       const data = await fakeRequest(app)
-        .get('/candies/2')
+        .get('/api/candies/6')
+        .set('Authorization', token)
         .expect('Content-Type', /json/)
         .expect(200);
 
-      expect(data.body).toEqual(expectation);
+      expect(data.body).toEqual(dbCandy);
 
 
       const nothing = await fakeRequest(app)
-        .get('/candies/100')
+        .get('/api/candies/1')
+        .set('Authorization', token)
         .expect('Content-Type', /json/)
         .expect(200);
 
